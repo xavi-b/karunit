@@ -47,6 +47,7 @@ void MainWindow::loadPlugins()
         // TODO dependency tree + check
         qDebug() << p->name();
         this->tabWidget->addTab(p->createWidget(), p->icon(), p->name());
+        p->initialize(loadedPluginsInterfaces);
     }
 }
 

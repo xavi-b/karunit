@@ -2,11 +2,14 @@ QT          += core gui widgets
 CONFIG      += c++17
 DEFINES     += QT_DEPRECATED_WARNINGS
 
-LIBS += -L$$PWD/../lib/ -lplugininterface
+LIBS += -L$$PWD/../lib/
+LIBS += -L$$PWD/../app/plugins/
+
+LIBS += -lplugininterface
 INCLUDEPATH += $$PWD/../plugininterface
 DEPENDPATH += $$PWD/../plugininterface
 
-LIBS += -L$$PWD/../lib/ -lcommon
+LIBS += -lcommon
 INCLUDEPATH += $$PWD/../common
 DEPENDPATH += $$PWD/../common
 
