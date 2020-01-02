@@ -3,8 +3,7 @@ TEMPLATE = subdirs
 SUBDIRS += \
     common \
     plugininterface \
-    emitplugin \
-    testplugin \
+    plugins \
     app
 
 CONFIG += ordered
