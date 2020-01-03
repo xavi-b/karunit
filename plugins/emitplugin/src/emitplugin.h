@@ -22,6 +22,7 @@ public:
     virtual QString license() const override;
     virtual QIcon icon() const override;
     virtual bool initialize(QSet<PluginInterface*> const& plugins) override;
+    virtual bool stop() override;
 
     virtual QWidget* createWidget() override;
     virtual QWidget* createSettingsWidget() override;

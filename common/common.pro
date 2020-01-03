@@ -8,7 +8,8 @@ DESTDIR         = $$PWD/../lib
 HEADERS += \
     $$PWD/log.h \
     $$PWD/logger.h \
-    $$PWD/settings.h
+    $$PWD/settings.h \
+    defines.h
 
 SOURCES += \
     $$PWD/logger.cpp \

@@ -75,6 +75,7 @@ public:
     virtual QString license() const = 0;
     virtual QIcon icon() const = 0;
     virtual bool initialize(QSet<PluginInterface*> const& plugins) = 0;
+    virtual bool stop() = 0;
 
     virtual QWidget* createWidget() = 0;
     virtual QWidget* createSettingsWidget() = 0;

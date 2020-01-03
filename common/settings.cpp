@@ -3,10 +3,10 @@
 namespace KU
 {
 
-Settings::Settings(QObject *parent)
-    : QSettings(parent)
+Settings::Settings(QObject* parent)
+    : QSettings(ORG_NAME, APP_NAME, parent)
 {
-
+    qDebug() << "Settings" << this->fileName();
 }
 
 Settings* Settings::instance()
@@ -18,6 +18,7 @@ Settings* Settings::instance()
 void Settings::setValue(QString const& key, QVariant const& value)
 {
     Settings::instance()->QSettings::setValue(key, value);
+    Settings::instance()->sync();
 }
 
 QVariant Settings::value(QString const& key, QVariant const& defaultValue)

@@ -24,3 +24,6 @@ SUBDIRS += \
     src/
 
 include(src/src.pri)
+
+RESOURCES += \
+    res/res.qrc

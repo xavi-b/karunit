@@ -1,13 +1,14 @@
 #include <QApplication>
 #include "mainwindow.h"
 #include "splashscreen.h"
+#include "defines.h"
 
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
 
-    app.setOrganizationName("xavi-b");
-    app.setOrganizationDomain("karunit");
+    app.setOrganizationName(ORG_NAME);
+    app.setOrganizationDomain(APP_NAME);
 
     KU::UI::SplashScreen splashScreen;
     splashScreen.show();

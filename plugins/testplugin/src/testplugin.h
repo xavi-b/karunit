@@ -5,7 +5,9 @@
 #include <QIcon>
 #include <QDebug>
 #include <QLabel>
+#include <QDateTime>
 #include "plugininterface.h"
+#include "settings.h"
 #include "emitplugin.h"
 
 class TestPlugin : public KU::PLUGIN::PluginInterface
@@ -22,6 +24,7 @@ public:
     virtual QString license() const override;
     virtual QIcon icon() const override;
     virtual bool initialize(QSet<PluginInterface*> const& plugins) override;
+    virtual bool stop() override;
 
     virtual QWidget* createWidget() override;
     virtual QWidget* createSettingsWidget() override;

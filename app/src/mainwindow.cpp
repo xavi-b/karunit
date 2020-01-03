@@ -42,33 +42,34 @@ void MainWindow::loadPlugins()
         }
     }
 
+    //TODO redo
     for(auto& p : loadedPluginsInterfaces)
     {
-        // TODO dependency tree + check
-        qDebug() << p->name();
-        this->tabWidget->addTab(p->createWidget(), p->icon(), p->name());
-        p->initialize(loadedPluginsInterfaces);
+        auto widget = p->createWidget();
+        if(widget != nullptr)
+            this->tabWidget->addTab(widget, p->icon(), p->name());
+
+        auto settingsWidget = p->createSettingsWidget();
+        if(settingsWidget != nullptr)
+            this->settingsTabWidget->addTab(settingsWidget, p->icon(), p->name());
+
+        if(p->loadSettings() && p->initialize(loadedPluginsInterfaces))
+            this->initializedPlugins.insert(p);
     }
 }
 
 void MainWindow::unloadPlugins()
 {
-    //TODO
+    for(auto& p : this->initializedPlugins)
+    {
+        p->saveSettings();
+        p->stop();
+    }
 }
 
-QWidget* MainWindow::buildCentralWidget()
+QWidget* MainWindow::buildTabWidget()
 {
-    this->tabWidget = new QTabWidget;
-    this->tabWidget->setObjectName("CentralTabWidget");
-    this->tabWidget->setStyleSheet("QTabWidget#CentralTabWidget::tab-bar { alignment: center; }");
-    this->tabWidget->setTabPosition(QTabWidget::South);
-    this->tabWidget->tabBar()->setExpanding(false);
-    this->tabWidget->tabBar()->setStyleSheet("QTabBar::scroller { width: 0px; } QTabBar::tab { height: 80px; width: 200px; }");
-
-    this->tabWidget->addTab(new QWidget, "test1");
-    this->tabWidget->addTab(new QWidget, "test2");
-    this->tabWidget->addTab(new QWidget, "test3");
-    this->tabWidget->addTab(new QWidget, "PARAMS");
+    this->tabWidget->addTab(this->settingsTabWidget, tr("Settings"));
 
     return this->tabWidget;
 }
@@ -76,8 +77,19 @@ QWidget* MainWindow::buildCentralWidget()
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
-    this->setCentralWidget(this->buildCentralWidget());
+    this->setMinimumSize(640, 480);
+
+    this->tabWidget = new WIDGETS::MainTabWidget;
+    this->settingsTabWidget = new WIDGETS::SettingsTab;
+
     this->loadPlugins();
+
+    this->setCentralWidget(this->buildTabWidget());
+}
+
+MainWindow::~MainWindow()
+{
+    this->unloadPlugins();
 }
 
 

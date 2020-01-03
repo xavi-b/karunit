@@ -41,6 +41,11 @@ bool EmitPlugin::initialize(const QSet<KU::PLUGIN::PluginInterface*>& plugins)
     return true;
 }
 
+bool EmitPlugin::stop()
+{
+    return true;
+}
+
 QWidget* EmitPlugin::createWidget()
 {
     return new QLabel("emit");

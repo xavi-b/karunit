@@ -27,7 +27,7 @@ QString TestPlugin::license() const
 
 QIcon TestPlugin::icon() const
 {
-    return QIcon(":/res/icon");
+    return QIcon(":/logo");
 }
 
 bool TestPlugin::initialize(const QSet<KU::PLUGIN::PluginInterface*>& plugins)
@@ -49,6 +49,11 @@ bool TestPlugin::initialize(const QSet<KU::PLUGIN::PluginInterface*>& plugins)
     return true;
 }
 
+bool TestPlugin::stop()
+{
+    return true;
+}
+
 QWidget* TestPlugin::createWidget()
 {
     return new QLabel("test");
@@ -61,10 +66,13 @@ QWidget* TestPlugin::createSettingsWidget()
 
 bool TestPlugin::loadSettings()
 {
+    qDebug() << "loadSettings" << KU::Settings::value(this->id(), "timestamp", 0).toLongLong();
     return true;
 }
 
 bool TestPlugin::saveSettings() const
 {
-    return true;
+    KU::Settings::instance()->setValue(this->id(), "timestamp", QDateTime::currentSecsSinceEpoch());
+    qDebug() << "saveSettings" << KU::Settings::instance()->status();
+    return KU::Settings::instance()->status() == QSettings::NoError;
 }
