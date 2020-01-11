@@ -62,11 +62,33 @@ struct PluginInfo
     }
 };
 
-class PluginInterface : public QObject
+class PluginConnector : public QObject
 {
     Q_OBJECT
 public:
-    virtual ~PluginInterface() = default;
+    PluginConnector(QObject* parent = nullptr) : QObject(parent) { }
+
+    void emitLog(Log const& l) const
+    {
+        emit log(l);
+    }
+
+signals:
+    void hasInitialized(bool success);
+    void log(Log const& log) const;
+};
+
+class PluginInterface
+{
+private:
+    PluginConnector* pluginConnector = nullptr;
+
+public:
+    virtual ~PluginInterface()
+    {
+        if(this->pluginConnector != nullptr)
+            delete this->pluginConnector;
+    }
 
     virtual QString name() const = 0;
     virtual QString id() const = 0;
@@ -90,7 +112,7 @@ public:
     {
         return plugins.contains(this->dependencies());
     }
-    QSet<PluginInfo> missingDependencies(QSet<PluginInfo> const& plugins) const
+    QSet<PluginInfo> missingDependencies(QSet<PluginInfo> const& plugins)
     {
         QSet<PluginInfo> missingPlugins;
         for(auto const& d : this->dependencies())
@@ -98,15 +120,17 @@ public:
             if(!plugins.contains(d))
             {
                 missingPlugins.insert(d);
-                emit log(Log(LogLevel::WARN, QString("Missing dependency %1 for %2").arg(d.toString()).arg(this->version().toString())));
+                this->getPluginConnector()->emitLog(Log(LogLevel::WARN, QString("Missing dependency %1 for %2").arg(d.toString()).arg(this->version().toString())));
             }
         }
         return missingPlugins;
     }
-
-signals:
-    void hasInitialized(bool success);
-    void log(Log const& log) const;
+    PluginConnector* getPluginConnector()
+    {
+        if(this->pluginConnector == nullptr)
+            this->pluginConnector = new PluginConnector;
+        return this->pluginConnector;
+    }
 };
 
 }

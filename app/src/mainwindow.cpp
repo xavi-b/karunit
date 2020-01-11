@@ -45,6 +45,11 @@ void MainWindow::loadPlugins()
     //TODO redo
     for(auto& p : loadedPluginsInterfaces)
     {
+        connect(p->getPluginConnector(), &KU::PLUGIN::PluginConnector::log, this, [=](Log const& log)
+        {
+            Logger::log(log.level, "[PLUGIN " + p->name() +"] " + log.text);
+        });
+
         auto widget = p->createWidget();
         if(widget != nullptr)
             this->tabWidget->addTab(widget, p->icon(), p->name());
@@ -52,7 +57,10 @@ void MainWindow::loadPlugins()
         auto settingsWidget = p->createSettingsWidget();
         if(settingsWidget != nullptr)
             this->settingsTabWidget->addTab(settingsWidget, p->icon(), p->name());
+    }
 
+    for(auto& p : loadedPluginsInterfaces)
+    {
         if(p->loadSettings() && p->initialize(loadedPluginsInterfaces))
             this->initializedPlugins.insert(p);
     }

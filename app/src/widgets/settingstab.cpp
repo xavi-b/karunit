@@ -29,7 +29,10 @@ SettingsTab::SettingsTab(QWidget* parent)
     this->stackedWidget = new QStackedWidget(this);
     layout->addWidget(this->stackedWidget, 1);
 
-    connect(this->listWidget, &QListWidget::currentRowChanged, this->stackedWidget, &QStackedWidget::setCurrentIndex);
+    connect(this->listWidget, &QListWidget::clicked, this, [=](QModelIndex const& index)
+    {
+        this->stackedWidget->setCurrentIndex(index.row());
+    });
 
     this->setLayout(layout);
 }
