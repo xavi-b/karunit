@@ -1,7 +1,5 @@
 TEMPLATE = subdirs
 
-SUBDIRS += \
-    emitplugin \
-    testplugin
+SUBDIRS +=
 
 CONFIG += ordered
