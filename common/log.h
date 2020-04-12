@@ -17,24 +17,25 @@ static_assert(sizeof(LogLevelNames)/sizeof(char*) == LogLevel::__COUNT, "Sizes d
 
 struct Log
 {
+    QDateTime dateTime;
     LogLevel level;
     QString text;
 
     Log(LogLevel level, QString const& text)
-        : level(level), text(text)
+        : level(level), text(text), dateTime(QDateTime::currentDateTimeUtc())
     {
 
     }
 
     Log(QString const& text)
-        : level(LogLevel::DEBUG), text(text)
+        : level(LogLevel::DEBUG), text(text), dateTime(QDateTime::currentDateTimeUtc())
     {
 
     }
 
     QString toString() const
     {
-        return QString("[%1] %2").arg(LogLevelNames[this->level]).arg(this->text);
+        return QString("%1 [%2] %3").arg(this->dateTime.toString(Qt::ISODateWithMs)).arg(LogLevelNames[this->level]).arg(this->text);
     }
 };
 
