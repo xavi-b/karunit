@@ -2,6 +2,7 @@
 #define LOG_H
 
 #include <QString>
+#include <QDateTime>
 
 namespace KU
 {

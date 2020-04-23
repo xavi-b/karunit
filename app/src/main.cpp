@@ -17,7 +17,12 @@ int main(int argc, char *argv[])
     app.processEvents();
 
     KU::UI::MainWindow w;
-    w.show();
+
+#ifdef QT_DEBUG
+    w.showMaximized();
+#else
+    w.showFullScreen();
+#endif
 
     return app.exec();
 }
