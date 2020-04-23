@@ -19,12 +19,27 @@ SettingsTab::SettingsTab(QWidget* parent)
     : QWidget(parent)
 {
     QHBoxLayout* layout = new QHBoxLayout(this);
+    QVBoxLayout* leftLayout = new QVBoxLayout;
 
     this->listWidget = new QListWidget(this);
     this->listWidget->setItemDelegate(new SettingsListDelegate(40));
     this->listWidget->setFlow(QListView::TopToBottom);
     this->listWidget->setFixedWidth(200);
-    layout->addWidget(this->listWidget);
+    leftLayout->addWidget(this->listWidget, 1);
+
+    QPushButton* quitButton = new QPushButton;
+    quitButton->setText(tr("Quit"));
+    connect(quitButton, &QPushButton::clicked, this, [=]()
+    {
+        if(QMessageBox::question(this, tr("Close request"), tr("Are you sure about closing ?"))
+        == QMessageBox::Yes)
+        {
+            QCoreApplication::instance()->quit();
+        }
+    });
+    leftLayout->addWidget(quitButton);
+
+    layout->addLayout(leftLayout);
 
     this->stackedWidget = new QStackedWidget(this);
     layout->addWidget(this->stackedWidget, 1);

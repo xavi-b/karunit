@@ -4,8 +4,12 @@
 #include <QListWidget>
 #include <QStackedWidget>
 #include <QHBoxLayout>
+#include <QVBoxLayout>
+#include <QPushButton>
+#include <QMessageBox>
 #include <QStyledItemDelegate>
 #include <QPainter>
+#include <QCoreApplication>
 
 namespace KU::UI::WIDGETS
 {
