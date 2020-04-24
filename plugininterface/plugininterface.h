@@ -68,14 +68,42 @@ class PluginConnector : public QObject
 public:
     PluginConnector(QObject* parent = nullptr) : QObject(parent) { }
 
-    void emitLog(XB::Log const& l) const
+    void emitLogSignal(XB::Log const& l) const
     {
         emit log(l);
+    }
+
+    void emitPluginSignal(QString const& signal)
+    {
+        emit pluginSignal(signal);
+    }
+
+    void emitPluginDataSignal(QString const& signal, QVariantMap const& data)
+    {
+        emit pluginDataSignal(signal, data);
+    }
+
+    void emitPluginChoiceSignal(QString const& signal, QVariantMap const& data)
+    {
+        emit pluginChoiceSignal(signal, data);
+    }
+
+    virtual void pluginSlot(QString const& signal, QVariantMap const& data)
+    {
+
+    }
+
+    virtual bool hasRegisteredPluginChoiceSignal(QString const& signal)
+    {
+        return false;
     }
 
 signals:
     void hasInitialized(bool success);
     void log(XB::Log const& log) const;
+    void pluginSignal(QString const& signal);
+    void pluginDataSignal(QString const& signal, QVariantMap const& data);
+    void pluginChoiceSignal(QString const& signal, QVariantMap const& data);
 };
 
 class PluginInterface
@@ -87,7 +115,7 @@ public:
     virtual ~PluginInterface()
     {
         if(this->pluginConnector != nullptr)
-            delete this->pluginConnector;
+            this->pluginConnector->deleteLater();
     }
 
     virtual QString name() const = 0;
@@ -113,6 +141,11 @@ public:
         if(this->pluginConnector == nullptr)
             this->pluginConnector = new PluginConnector;
         return this->pluginConnector;
+    }
+
+    void setPluginConnector(PluginConnector* pluginConnector)
+    {
+        this->pluginConnector = pluginConnector;
     }
 };
 

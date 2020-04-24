@@ -1,6 +1,8 @@
 QT          += core gui widgets
 CONFIG      += c++17
 DEFINES     += QT_DEPRECATED_WARNINGS
+TARGET       = karunit
+DESTDIR      = $$PWD
 
 LIBS += -L$$PWD/../plugininterface/ -lplugininterface
 INCLUDEPATH += $$PWD/../plugininterface

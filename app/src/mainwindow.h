@@ -24,6 +24,7 @@ private:
     WIDGETS::SettingsTab* settingsTabWidget = nullptr;
 
     void loadPlugins();
+    void connectPlugin(KU::PLUGIN::PluginInterface* plugin);
     void unloadPlugins();
 
 protected:

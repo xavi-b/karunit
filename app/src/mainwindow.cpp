@@ -49,10 +49,7 @@ void MainWindow::loadPlugins()
 
         this->initializedPlugins.insert(p);
 
-        connect(p->getPluginConnector(), &KU::PLUGIN::PluginConnector::log, this, [=](XB::Log const& log)
-        {
-            XB::Logger::log(log.level, "[PLUGIN " + p->name() +"] " + log.text);
-        });
+        connectPlugin(p);
 
         auto widget = p->createWidget();
         if(widget != nullptr)
@@ -62,6 +59,52 @@ void MainWindow::loadPlugins()
         if(settingsWidget != nullptr)
             this->settingsTabWidget->addTab(settingsWidget, p->icon(), p->name());
     }
+}
+
+void MainWindow::connectPlugin(PLUGIN::PluginInterface* plugin)
+{
+    connect(plugin->getPluginConnector(), &KU::PLUGIN::PluginConnector::log, this, [=](XB::Log const& log)
+    {
+        XB::Logger::log(log.level, "[PLUGIN " + plugin->name() +"] " + log.text);
+    });
+
+    connect(plugin->getPluginConnector(), &KU::PLUGIN::PluginConnector::pluginSignal, this,
+            [=](QString const& signal)
+    {
+        for(auto& p : this->initializedPlugins)
+            if(p != plugin)
+                p->getPluginConnector()->pluginSlot(signal, QVariantMap());
+    });
+
+    connect(plugin->getPluginConnector(), &KU::PLUGIN::PluginConnector::pluginDataSignal, this,
+            [=](QString const& signal, QVariantMap const& data)
+    {
+        for(auto& p : this->initializedPlugins)
+            if(p != plugin)
+                p->getPluginConnector()->pluginSlot(signal, data);
+    });
+
+    connect(plugin->getPluginConnector(), &KU::PLUGIN::PluginConnector::pluginChoiceSignal, this,
+            [=](QString const& signal, QVariantMap const& data)
+    {
+        QSet<KU::PLUGIN::PluginInterface*> signalRegisteredPlugins;
+
+        for(auto& p : this->initializedPlugins)
+            if(p != plugin && p->getPluginConnector()->hasRegisteredPluginChoiceSignal(signal))
+                signalRegisteredPlugins.insert(p);
+
+        if(signalRegisteredPlugins.size() > 0)
+        {
+            if(signalRegisteredPlugins.size() == 1)
+            {
+                (*signalRegisteredPlugins.begin())->getPluginConnector()->pluginSlot(signal, data);
+            }
+            else
+            {
+                //TODO prompt choice between registered plugins
+            }
+        }
+    });
 }
 
 void MainWindow::unloadPlugins()
@@ -97,6 +140,5 @@ MainWindow::~MainWindow()
 {
     this->unloadPlugins();
 }
-
 
 }
