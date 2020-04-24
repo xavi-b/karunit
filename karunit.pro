@@ -1,6 +1,7 @@
 TEMPLATE = subdirs
 
 SUBDIRS += \
+    third-party \
     common \
     plugininterface \
     plugins \

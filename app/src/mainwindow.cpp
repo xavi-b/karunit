@@ -17,13 +17,13 @@ void MainWindow::loadPlugins()
         if(!fileName.endsWith(".so"))
             continue;
 
-        Logger::log(LogLevel::DEBUG, "Trying to load plugin with filename " + fileName);
+        XB::Logger::log(XB::LogLevel::DEBUG, "Trying to load plugin with filename " + fileName);
 
         QPluginLoader loader(pluginsDir.absoluteFilePath(fileName));
         auto plugin = loader.instance();
         if(plugin != nullptr)
         {
-            Logger::log(LogLevel::DEBUG, "QPluginLoader loaded plugin with filename " + fileName);
+            XB::Logger::log(XB::LogLevel::DEBUG, "QPluginLoader loaded plugin with filename " + fileName);
             auto pluginInterface = qobject_cast<KU::PLUGIN::PluginInterface*>(plugin);
             if(pluginInterface != nullptr)
             {
@@ -32,22 +32,26 @@ void MainWindow::loadPlugins()
             }
             else
             {
-                Logger::log(LogLevel::WARN, "Plugin " + fileName + " cannot be cast to plugin interface");
+                XB::Logger::log(XB::LogLevel::WARN, "Plugin " + fileName + " cannot be cast to plugin interface");
             }
         }
         else
         {
-            Logger::log(LogLevel::WARN, "QPluginLoader failed to load plugin with filename " + fileName);
-            Logger::log(LogLevel::WARN, loader.errorString());
+            XB::Logger::log(XB::LogLevel::WARN, "QPluginLoader failed to load plugin with filename " + fileName);
+            XB::Logger::log(XB::LogLevel::WARN, loader.errorString());
         }
     }
 
-    //TODO redo
     for(auto& p : loadedPluginsInterfaces)
     {
-        connect(p->getPluginConnector(), &KU::PLUGIN::PluginConnector::log, this, [=](Log const& log)
+        if(!p->loadSettings() || !p->initialize())
+            continue;
+
+        this->initializedPlugins.insert(p);
+
+        connect(p->getPluginConnector(), &KU::PLUGIN::PluginConnector::log, this, [=](XB::Log const& log)
         {
-            Logger::log(log.level, "[PLUGIN " + p->name() +"] " + log.text);
+            XB::Logger::log(log.level, "[PLUGIN " + p->name() +"] " + log.text);
         });
 
         auto widget = p->createWidget();
@@ -57,12 +61,6 @@ void MainWindow::loadPlugins()
         auto settingsWidget = p->createSettingsWidget();
         if(settingsWidget != nullptr)
             this->settingsTabWidget->addTab(settingsWidget, p->icon(), p->name());
-    }
-
-    for(auto& p : loadedPluginsInterfaces)
-    {
-        if(p->loadSettings() && p->initialize(loadedPluginsInterfaces))
-            this->initializedPlugins.insert(p);
     }
 }
 
