@@ -133,6 +133,23 @@ QWidget* MainWindow::buildTabWidget()
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
+    QDir logDir(QCoreApplication::applicationDirPath());
+    if(logDir.exists("log") || logDir.mkdir("log"))
+    {
+        XB::Logger::log(XB::LogLevel::INFO, "Log directory: " + logDir.filePath("log"));
+
+        this->fileLogger = new XB::FileLogger(logDir.filePath("log"), this);
+        connect(this->fileLogger, &XB::FileLogger::fileError, this, [=](QFile::FileError error)
+        {
+            XB::Logger::log(XB::LogLevel::ERROR, "FileLogger QFileError: " + QString::number(error));
+        });
+        this->fileLogger->start();
+    }
+    else
+    {
+        XB::Logger::log(XB::LogLevel::ERROR, "Could not create log directory: " + logDir.filePath("log"));
+    }
+
     this->setMinimumSize(640, 480);
 
     this->tabWidget = new WIDGETS::MainTabWidget;
@@ -158,6 +175,8 @@ MainWindow::MainWindow(QWidget *parent)
 MainWindow::~MainWindow()
 {
     this->unloadPlugins();
+    if(this->fileLogger)
+        this->fileLogger->quit();
 }
 
 void MainWindow::showPrompt(QSet<PLUGIN::PluginInterface*> plugins, QString const& signal, QVariantMap const& data)

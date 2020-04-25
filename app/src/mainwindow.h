@@ -7,6 +7,7 @@
 #include <QDir>
 #include <QPluginLoader>
 #include "logger.h"
+#include "filelogger.h"
 #include "plugininterface.h"
 #include "widgets/maintabwidget.h"
 #include "widgets/settingstab.h"
@@ -24,6 +25,7 @@ private:
     WIDGETS::MainTabWidget* tabWidget = nullptr;
     WIDGETS::SettingsTab* settingsTabWidget = nullptr;
     WIDGETS::Prompt* prompt = nullptr;
+    XB::FileLogger* fileLogger = nullptr;
 
     void loadPlugins();
     void connectPlugin(KU::PLUGIN::PluginInterface* plugin);
