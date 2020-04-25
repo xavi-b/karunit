@@ -71,6 +71,8 @@ void MainWindow::connectPlugin(PLUGIN::PluginInterface* plugin)
     connect(plugin->getPluginConnector(), &KU::PLUGIN::PluginConnector::pluginSignal, this,
             [=](QString const& signal)
     {
+        XB::Logger::log(XB::LogLevel::DEBUG, plugin->name() + " emitPluginSignal " + signal);
+
         for(auto& p : this->initializedPlugins)
             if(p != plugin)
                 p->getPluginConnector()->pluginSlot(signal, QVariantMap());
@@ -79,6 +81,8 @@ void MainWindow::connectPlugin(PLUGIN::PluginInterface* plugin)
     connect(plugin->getPluginConnector(), &KU::PLUGIN::PluginConnector::pluginDataSignal, this,
             [=](QString const& signal, QVariantMap const& data)
     {
+        XB::Logger::log(XB::LogLevel::DEBUG, plugin->name() + " emitPluginDataSignal " + signal);
+
         for(auto& p : this->initializedPlugins)
             if(p != plugin)
                 p->getPluginConnector()->pluginSlot(signal, data);
@@ -87,6 +91,8 @@ void MainWindow::connectPlugin(PLUGIN::PluginInterface* plugin)
     connect(plugin->getPluginConnector(), &KU::PLUGIN::PluginConnector::pluginChoiceSignal, this,
             [=](QString const& signal, QVariantMap const& data)
     {
+        XB::Logger::log(XB::LogLevel::DEBUG, plugin->name() + " emitPluginChoiceSignal " + signal);
+
         QSet<KU::PLUGIN::PluginInterface*> signalRegisteredPlugins;
 
         for(auto& p : this->initializedPlugins)
@@ -97,11 +103,12 @@ void MainWindow::connectPlugin(PLUGIN::PluginInterface* plugin)
         {
             if(signalRegisteredPlugins.size() == 1)
             {
+                XB::Logger::log(XB::LogLevel::DEBUG, (*signalRegisteredPlugins.begin())->name() + " pluginSlot" + signal);
                 (*signalRegisteredPlugins.begin())->getPluginConnector()->pluginSlot(signal, data);
             }
             else
             {
-                //TODO prompt choice between registered plugins
+                this->showPrompt(signalRegisteredPlugins, signal, data);
             }
         }
     });
@@ -130,6 +137,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     this->tabWidget = new WIDGETS::MainTabWidget;
     this->settingsTabWidget = new WIDGETS::SettingsTab;
+    this->prompt = new WIDGETS::Prompt(this->minimumWidth()*3/4, this);
 
     this->loadPlugins();
 
@@ -139,6 +147,25 @@ MainWindow::MainWindow(QWidget *parent)
 MainWindow::~MainWindow()
 {
     this->unloadPlugins();
+}
+
+void MainWindow::showPrompt(QSet<PLUGIN::PluginInterface*> plugins, QString const& signal, QVariantMap const& data)
+{
+    disconnect(this->prompt, &WIDGETS::Prompt::choiceMade, this, nullptr);
+    connect(this->prompt, &WIDGETS::Prompt::choiceMade,
+            this, [=](KU::PLUGIN::PluginInterface* plugin)
+    {
+        XB::Logger::log(XB::LogLevel::DEBUG, plugin->name() + " pluginSlot" + signal);
+        plugin->getPluginConnector()->pluginSlot(signal, data);
+    });
+
+    this->prompt->setChoices(plugins);
+    this->prompt->slideDown(this->width()*3/4);
+}
+
+void MainWindow::hidePrompt()
+{
+
 }
 
 }

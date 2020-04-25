@@ -10,6 +10,7 @@
 #include "plugininterface.h"
 #include "widgets/maintabwidget.h"
 #include "widgets/settingstab.h"
+#include "widgets/prompt.h"
 
 namespace KU::UI
 {
@@ -22,6 +23,7 @@ private:
     QSet<KU::PLUGIN::PluginInterface*> initializedPlugins;
     WIDGETS::MainTabWidget* tabWidget = nullptr;
     WIDGETS::SettingsTab* settingsTabWidget = nullptr;
+    WIDGETS::Prompt* prompt = nullptr;
 
     void loadPlugins();
     void connectPlugin(KU::PLUGIN::PluginInterface* plugin);
@@ -34,6 +36,8 @@ public:
     MainWindow(QWidget *parent = nullptr);
     virtual ~MainWindow();
 
+    void showPrompt(QSet<KU::PLUGIN::PluginInterface*> plugins, QString const& signal, QVariantMap const& data);
+    void hidePrompt();
 };
 
 }

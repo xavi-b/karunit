@@ -3,3 +3,9 @@
 	url = git@github.com:xavi-b/xblog.git
     branch = master
     ignore = all
+
+[submodule "third-party/xbwidgets"]
+	path = third-party/xbwidgets
+	url = git@github.com:xavi-b/xbwidgets.git
+    branch = master
+    ignore = all
