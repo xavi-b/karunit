@@ -1,5 +1,6 @@
 TEMPLATE = subdirs
 
-SUBDIRS +=
+SUBDIRS += \
+    $$PWD/karunit_log
 
 CONFIG += ordered

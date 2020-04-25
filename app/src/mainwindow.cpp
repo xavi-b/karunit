@@ -142,6 +142,17 @@ MainWindow::MainWindow(QWidget *parent)
     this->loadPlugins();
 
     this->setCentralWidget(this->buildTabWidget());
+
+    connect(XB::Logger::instance(), &XB::Logger::logWritten, this, [=](XB::Log const& log)
+    {
+        QVariantMap data;
+        data["level"] = static_cast<int>(log.level);
+        data["dateTime"] = log.dateTime;
+        data["text"] = log.text;
+
+        for(auto& p : this->initializedPlugins)
+            p->getPluginConnector()->pluginSlot("log", data);
+    });
 }
 
 MainWindow::~MainWindow()
