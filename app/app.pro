@@ -13,8 +13,8 @@ INCLUDEPATH += $$PWD/../common
 LIBS += -L$$PWD/../third-party/xblog/ -lxblog
 INCLUDEPATH += $$PWD/../third-party/xblog/src
 
-LIBS += -L$$PWD/../third-party/xbwidgets/ -lxbwidgets
-INCLUDEPATH += $$PWD/../third-party/xbwidgets/src
+LIBS += -L$$PWD/../third-party/SlidingPanel/lib -lSlidingPanel
+INCLUDEPATH += $$PWD/../third-party/SlidingPanel/include
 
 SUBDIRS += \
     src/

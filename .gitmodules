@@ -4,8 +4,8 @@
     branch = master
     ignore = all
 
-[submodule "third-party/xbwidgets"]
-	path = third-party/xbwidgets
-	url = git@github.com:xavi-b/xbwidgets.git
+[submodule "third-party/SlidingPanel"]
+	path = third-party/SlidingPanel
+	url = git@github.com:xavi-b/SlidingPanel.git
     branch = master
     ignore = all
