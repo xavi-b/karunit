@@ -1,9 +1,15 @@
-#include "settingstab.h"
+#include "abouttab.h"
 
 namespace KU::UI::WIDGETS
 {
 
-SettingsTab::SettingsTab(QWidget* parent)
+void AboutTab::addAppTab()
+{
+    //TODO
+    //this->addTab()
+}
+
+AboutTab::AboutTab(QWidget* parent)
     : QWidget(parent)
 {
     QHBoxLayout* layout = new QHBoxLayout(this);
@@ -14,18 +20,6 @@ SettingsTab::SettingsTab(QWidget* parent)
     this->listWidget->setFlow(QListView::TopToBottom);
     this->listWidget->setFixedWidth(200);
     leftLayout->addWidget(this->listWidget, 1);
-
-    QPushButton* quitButton = new QPushButton;
-    quitButton->setText(tr("Quit"));
-    connect(quitButton, &QPushButton::clicked, this, [=]()
-    {
-        if(QMessageBox::question(this, tr("Close request"), tr("Are you sure about closing ?"))
-        == QMessageBox::Yes)
-        {
-            QCoreApplication::instance()->quit();
-        }
-    });
-    leftLayout->addWidget(quitButton);
 
     layout->addLayout(leftLayout);
 
@@ -38,9 +32,11 @@ SettingsTab::SettingsTab(QWidget* parent)
     });
 
     this->setLayout(layout);
+
+    this->addAppTab();
 }
 
-void SettingsTab::addTab(QWidget* widget, QIcon icon, QString const& name)
+void AboutTab::addTab(QWidget* widget, QIcon icon, QString const& name)
 {
     QListWidgetItem* item = new QListWidgetItem(icon, name);
     item->setTextAlignment(Qt::AlignLeft | Qt::AlignVCenter);

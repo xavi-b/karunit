@@ -83,6 +83,11 @@ QWidget* KU_Log_Plugin::createSettingsWidget()
     return this->logsWidget;
 }
 
+QWidget* KU_Log_Plugin::createAboutWidget()
+{
+    return nullptr;
+}
+
 bool KU_Log_Plugin::loadSettings()
 {
     return true;

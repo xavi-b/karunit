@@ -128,6 +128,7 @@ public:
 
     virtual QWidget* createWidget() = 0;
     virtual QWidget* createSettingsWidget() = 0;
+    virtual QWidget* createAboutWidget() = 0;
     virtual bool loadSettings() = 0;
     virtual bool saveSettings() const = 0;
 

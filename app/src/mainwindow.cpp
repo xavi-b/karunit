@@ -58,6 +58,10 @@ void MainWindow::loadPlugins()
         auto settingsWidget = p->createSettingsWidget();
         if(settingsWidget != nullptr)
             this->settingsTabWidget->addTab(settingsWidget, p->icon(), p->name());
+
+        auto aboutWidget = p->createAboutWidget();
+        if(aboutWidget != nullptr)
+            this->aboutTabWidget->addTab(aboutWidget, p->icon(), p->name());
     }
 }
 
@@ -126,6 +130,7 @@ void MainWindow::unloadPlugins()
 QWidget* MainWindow::buildTabWidget()
 {
     this->tabWidget->addTab(this->settingsTabWidget, tr("Settings"));
+    this->tabWidget->addTab(this->aboutTabWidget, tr("About"));
 
     return this->tabWidget;
 }
@@ -154,6 +159,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     this->tabWidget = new WIDGETS::MainTabWidget;
     this->settingsTabWidget = new WIDGETS::SettingsTab;
+    this->aboutTabWidget = new WIDGETS::AboutTab;
     this->prompt = new WIDGETS::Prompt(this->minimumWidth()*3/4, this);
 
     this->loadPlugins();

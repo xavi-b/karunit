@@ -1,5 +1,5 @@
-#ifndef SETTINGSTAB_H
-#define SETTINGSTAB_H
+#ifndef ABOUTTAB_H
+#define ABOUTTAB_H
 
 #include <QListWidget>
 #include <QStackedWidget>
@@ -13,7 +13,7 @@
 namespace KU::UI::WIDGETS
 {
 
-class SettingsTab : public QWidget
+class AboutTab : public QWidget
 {
     Q_OBJECT
 
@@ -21,12 +21,14 @@ private:
     QListWidget* listWidget = nullptr;
     QStackedWidget* stackedWidget = nullptr;
 
+    void addAppTab();
+
 public:
-    SettingsTab(QWidget* parent = nullptr);
+    AboutTab(QWidget* parent = nullptr);
 
     void addTab(QWidget* widget, QIcon icon, QString const& name);
 };
 
 }
 
-#endif // SETTINGSTAB_H
+#endif // ABOUTTAB_H

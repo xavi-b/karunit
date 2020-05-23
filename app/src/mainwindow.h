@@ -11,6 +11,7 @@
 #include "plugininterface.h"
 #include "widgets/maintabwidget.h"
 #include "widgets/settingstab.h"
+#include "widgets/abouttab.h"
 #include "widgets/prompt.h"
 
 namespace KU::UI
@@ -24,6 +25,7 @@ private:
     QSet<KU::PLUGIN::PluginInterface*> initializedPlugins;
     WIDGETS::MainTabWidget* tabWidget = nullptr;
     WIDGETS::SettingsTab* settingsTabWidget = nullptr;
+    WIDGETS::AboutTab* aboutTabWidget = nullptr;
     WIDGETS::Prompt* prompt = nullptr;
     XB::FileLogger* fileLogger = nullptr;
 
