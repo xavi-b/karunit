@@ -10,8 +10,8 @@ INCLUDEPATH += $$PWD/../plugininterface
 LIBS += -L$$PWD/../common/ -lcommon
 INCLUDEPATH += $$PWD/../common
 
-LIBS += -L$$PWD/../third-party/xblog/ -lxblog
-INCLUDEPATH += $$PWD/../third-party/xblog/src
+LIBS += -L$$PWD/../third-party/xblog/lib -lxblog
+INCLUDEPATH += $$PWD/../third-party/xblog/include
 
 LIBS += -L$$PWD/../third-party/SlidingPanel/lib -lSlidingPanel
 INCLUDEPATH += $$PWD/../third-party/SlidingPanel/include
@@ -23,3 +23,7 @@ include(src/src.pri)
 
 RESOURCES += \
     app.qrc
+
+debug {
+CONFIG += console
+}

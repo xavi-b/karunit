@@ -11,8 +11,8 @@ INCLUDEPATH += $$PWD/../../plugininterface
 LIBS += -L$$PWD/../../common/ -lcommon
 INCLUDEPATH += $$PWD/../../common
 
-LIBS += -L$$PWD/../../third-party/xblog/ -lxblog
-INCLUDEPATH += $$PWD/../../third-party/xblog/src
+LIBS += -L$$PWD/../../third-party/xblog/lib -lxblog
+INCLUDEPATH += $$PWD/../../third-party/xblog/include
 
 SUBDIRS += \
     src/
