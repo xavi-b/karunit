@@ -3,8 +3,15 @@
 #include "splashscreen.h"
 #include "defines.h"
 
+#include <QLoggingCategory>
+
 int main(int argc, char *argv[])
 {
+#ifdef QT_DEBUG
+    QLoggingCategory::setFilterRules("default.debug=true\n"
+                                     "qt.positioning.*=true");
+#endif
+
     QCoreApplication::setAttribute(Qt::AA_ShareOpenGLContexts);
 
     qInstallMessageHandler([](QtMsgType type, QMessageLogContext const& context, QString const& msg)
