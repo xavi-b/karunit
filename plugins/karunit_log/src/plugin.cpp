@@ -49,18 +49,20 @@ bool KU_Log_Plugin::initialize()
 
     this->logsWidget = new QTextEdit;
     this->logsWidget->setReadOnly(true);
-
-    this->cache.setCapacity(100);
+    this->logsWidget->setFont(QFont("monospace"));
 
     connect(this->pluginConnector, &KU_Log_PluginConnector::logSignal,
             this, [=](XB::Log const& log)
     {
-        this->cache.append(log);
+        this->cache.push_front(log);
+
+        if(this->cache.size() > 100)
+            this->cache.pop_back();
 
         this->logsWidget->clear();
-        for(int i = 0; i < this->cache.size(); ++i)
+        for(size_t i = 0; i < this->cache.size(); ++i)
         {
-            this->logsWidget->append(this->cache[i].toString() + "\r\n");
+            this->logsWidget->append(this->cache[i].toString());
         }
         this->logsWidget->ensureCursorVisible();
     });

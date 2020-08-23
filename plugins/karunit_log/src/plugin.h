@@ -7,7 +7,7 @@
 #include <QLabel>
 #include <QTextEdit>
 #include <QDateTime>
-#include <QContiguousCache>
+#include <deque>
 #include "plugininterface.h"
 #include "settings.h"
 
@@ -45,7 +45,7 @@ public:
 private:
     KU_Log_PluginConnector* pluginConnector = nullptr;
     QTextEdit* logsWidget = nullptr;
-    QContiguousCache<XB::Log> cache;
+    std::deque<XB::Log> cache;
 };
 
 
