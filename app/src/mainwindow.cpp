@@ -155,7 +155,7 @@ MainWindow::MainWindow(QWidget *parent)
         XB::Logger::log(XB::LogLevel::ERROR, "Could not create log directory: " + logDir.filePath("log"));
     }
 
-    this->setMinimumSize(640, 480);
+    this->setMinimumSize(480, 320);
 
     this->tabWidget = new WIDGETS::MainTabWidget;
     this->settingsTabWidget = new WIDGETS::SettingsTab;
