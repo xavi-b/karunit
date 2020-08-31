@@ -4,10 +4,15 @@ DEFINES     += QT_DEPRECATED_WARNINGS
 TARGET       = karunit
 DESTDIR      = $$PWD
 
-LIBS += -L$$PWD/../plugininterface/ -lplugininterface
+unix {
+target.path = /usr/local/bin
+INSTALLS += target
+}
+
+LIBS += -L$$PWD/../plugininterface/ -lkarunit_plugininterface
 INCLUDEPATH += $$PWD/../plugininterface
 
-LIBS += -L$$PWD/../common/ -lcommon
+LIBS += -L$$PWD/../common/ -lkarunit_common
 INCLUDEPATH += $$PWD/../common
 
 LIBS += -L$$PWD/../third-party/xblog/lib -lxblog

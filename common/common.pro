@@ -2,8 +2,13 @@ TEMPLATE        = lib
 CONFIG         += plugin c++17
 DEFINES        += QT_DEPRECATED_WARNINGS
 QT             += core
-TARGET          = common
+TARGET          = karunit_common
 DESTDIR         = $$PWD
+
+unix {
+target.path = /usr/local/lib
+INSTALLS += target
+}
 
 HEADERS += \
     settings.h \

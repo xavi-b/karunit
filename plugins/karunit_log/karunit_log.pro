@@ -5,10 +5,10 @@ QT             += widgets
 TARGET          = karunit_log_plugin
 DESTDIR         = $$PWD/../../app/plugins
 
-LIBS += -L$$PWD/../../plugininterface/ -lplugininterface
+LIBS += -L$$PWD/../../plugininterface/ -lkarunit_plugininterface
 INCLUDEPATH += $$PWD/../../plugininterface
 
-LIBS += -L$$PWD/../../common/ -lcommon
+LIBS += -L$$PWD/../../common/ -lkarunit_common
 INCLUDEPATH += $$PWD/../../common
 
 LIBS += -L$$PWD/../../third-party/xblog/lib -lxblog
