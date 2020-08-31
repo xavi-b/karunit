@@ -5,6 +5,11 @@ QT             += widgets
 TARGET          = karunit_log_plugin
 DESTDIR         = $$PWD/../../app/plugins
 
+unix {
+target.path = /usr/local/bin/plugins
+INSTALLS += target
+}
+
 LIBS += -L$$PWD/../../plugininterface/ -lkarunit_plugininterface
 INCLUDEPATH += $$PWD/../../plugininterface
 
