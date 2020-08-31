@@ -129,8 +129,8 @@ void MainWindow::unloadPlugins()
 
 QWidget* MainWindow::buildTabWidget()
 {
-    this->tabWidget->addTab(this->settingsTabWidget, tr("Settings"));
-    this->tabWidget->addTab(this->aboutTabWidget, tr("About"));
+    this->tabWidget->addTab(this->settingsTabWidget, QIcon::fromTheme("preferences-system"), tr("Settings"));
+    this->tabWidget->addTab(this->aboutTabWidget, QIcon::fromTheme("dialog-information"), tr("About"));
 
     return this->tabWidget;
 }

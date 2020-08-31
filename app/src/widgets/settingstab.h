@@ -21,6 +21,9 @@ private:
     QListWidget* listWidget = nullptr;
     QStackedWidget* stackedWidget = nullptr;
 
+protected:
+    virtual void addAppTab();
+
 public:
     SettingsTab(QWidget* parent = nullptr);
 

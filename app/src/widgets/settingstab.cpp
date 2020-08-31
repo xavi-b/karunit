@@ -3,6 +3,12 @@
 namespace KU::UI::WIDGETS
 {
 
+void SettingsTab::addAppTab()
+{
+    //TODO
+    //this->addTab()
+}
+
 SettingsTab::SettingsTab(QWidget* parent)
     : QWidget(parent)
 {
@@ -38,6 +44,8 @@ SettingsTab::SettingsTab(QWidget* parent)
     });
 
     this->setLayout(layout);
+
+    this->addAppTab();
 }
 
 void SettingsTab::addTab(QWidget* widget, QIcon icon, QString const& name)
