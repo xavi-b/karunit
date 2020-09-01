@@ -5,13 +5,13 @@ namespace KU::UI
 
 void MainWindow::loadPlugins()
 {
-    QSet<KU::PLUGIN::PluginInterface*> loadedPluginsInterfaces;
-    QSet<KU::PLUGIN::PluginInfo> loadedPluginsInfos;
+    QVector<KU::PLUGIN::PluginInterface*> loadedPluginsInterfaces;
+    QVector<KU::PLUGIN::PluginInfo> loadedPluginsInfos;
 
     auto pluginsDir = QDir(QCoreApplication::applicationDirPath());
     pluginsDir.cd("plugins");
 
-    auto const entryList = pluginsDir.entryList(QDir::Files);
+    auto const entryList = pluginsDir.entryList(QDir::Files, QDir::SortFlag::Name);
     for(auto const& fileName : entryList)
     {
         if(!fileName.endsWith(".so"))
@@ -27,8 +27,8 @@ void MainWindow::loadPlugins()
             auto pluginInterface = qobject_cast<KU::PLUGIN::PluginInterface*>(plugin);
             if(pluginInterface != nullptr)
             {
-                loadedPluginsInterfaces.insert(pluginInterface);
-                loadedPluginsInfos.insert(pluginInterface->info());
+                loadedPluginsInterfaces.push_back(pluginInterface);
+                loadedPluginsInfos.push_back(pluginInterface->info());
             }
             else
             {
