@@ -44,12 +44,15 @@ void MainWindow::loadPlugins()
 
     for(auto& p : loadedPluginsInterfaces)
     {
-        if(!p->loadSettings() || !p->initialize())
+        if(!p->loadSettings())
+            continue;
+
+        connectPlugin(p);
+
+        if(!p->initialize())
             continue;
 
         this->initializedPlugins.insert(p);
-
-        connectPlugin(p);
 
         auto widget = p->createWidget();
         if(widget != nullptr)
