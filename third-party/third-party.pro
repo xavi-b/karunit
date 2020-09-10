@@ -2,4 +2,5 @@ TEMPLATE        = subdirs
 
 SUBDIRS += \
     $$PWD/xblog \
-    $$PWD/SlidingPanel
+    $$PWD/SlidingPanel \
+    $$PWD/QtFreeVirtualKeyboard

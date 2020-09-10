@@ -12,6 +12,8 @@ int main(int argc, char *argv[])
                                      "qt.positioning.*=true");
 #endif
 
+    qputenv("QT_IM_MODULE", QByteArray("freevirtualkeyboard"));
+
     QCoreApplication::setAttribute(Qt::AA_ShareOpenGLContexts);
 
     qInstallMessageHandler([](QtMsgType type, QMessageLogContext const& context, QString const& msg)
