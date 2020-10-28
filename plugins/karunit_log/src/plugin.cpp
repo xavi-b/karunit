@@ -64,7 +64,6 @@ bool KU_Log_Plugin::initialize()
         {
             this->logsWidget->append(this->cache[i].toString());
         }
-        this->logsWidget->ensureCursorVisible();
     });
 
     return true;
