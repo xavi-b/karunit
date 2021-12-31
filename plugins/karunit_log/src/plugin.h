@@ -4,21 +4,29 @@
 #include <QtPlugin>
 #include <QIcon>
 #include <QDebug>
-#include <QLabel>
-#include <QTextEdit>
 #include <QDateTime>
-#include <deque>
+#include <QTimer>
 #include "plugininterface.h"
 #include "settings.h"
 
 class KU_Log_PluginConnector : public KU::PLUGIN::PluginConnector
 {
     Q_OBJECT
+
+    Q_PROPERTY(QString logs READ logs NOTIFY logsChanged)
+
 public:
+    KU_Log_PluginConnector(QObject* parent = nullptr);
     virtual void pluginSlot(QString const& signal, QVariantMap const& data) override;
 
+    QString logs() const;
+
 signals:
-    void logSignal(XB::Log const& log);
+    void logsChanged();
+
+private:
+    QTimer      timer;
+    QStringList cache;
 };
 
 class KU_Log_Plugin : public QObject, public KU::PLUGIN::PluginInterface
@@ -28,25 +36,17 @@ class KU_Log_Plugin : public QObject, public KU::PLUGIN::PluginInterface
     Q_INTERFACES(KU::PLUGIN::PluginInterface)
 
 public:
-    virtual QString name() const override;
-    virtual QString id() const override;
+    virtual QString                   name() const override;
+    virtual QString                   id() const override;
     virtual KU::PLUGIN::PluginVersion version() const override;
-    virtual QString license() const override;
-    virtual QIcon icon() const override;
-    virtual bool initialize() override;
-    virtual bool stop() override;
+    virtual QString                   license() const override;
+    virtual QString                   icon() const override;
+    virtual bool                      initialize() override;
+    virtual bool                      stop() override;
 
-    virtual QWidget* createWidget() override;
-    virtual QWidget* createSettingsWidget() override;
-    virtual QWidget* createAboutWidget() override;
-    virtual bool loadSettings() override;
-    virtual bool saveSettings() const override;
-
-private:
-    KU_Log_PluginConnector* pluginConnector = nullptr;
-    QTextEdit* logsWidget = nullptr;
-    std::deque<XB::Log> cache;
+    virtual bool                    loadSettings() override;
+    virtual bool                    saveSettings() const override;
+    virtual KU_Log_PluginConnector* getPluginConnector() override;
 };
-
 
 #endif // LOGPLUGIN_H

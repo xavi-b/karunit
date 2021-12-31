@@ -1,3 +1,5 @@
 <RCC>
-    <qresource prefix="/"/>
+    <qresource prefix="/">
+        <file alias="karunit_log/settings.qml">qml/settings.qml</file>
+    </qresource>
 </RCC>

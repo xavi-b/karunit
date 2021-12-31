@@ -11,8 +11,8 @@ namespace KU::PLUGIN
 
 struct PluginVersion
 {
-    int major = 0;
-    int minor = 0;
+    int major       = 0;
+    int minor       = 0;
     int maintenance = 0;
 
     QString toString() const
@@ -39,7 +39,7 @@ struct PluginVersion
 struct PluginInfo
 {
     PluginVersion version;
-    QString id;
+    QString       id;
 
     QString toString() const
     {
@@ -66,7 +66,10 @@ class PluginConnector : public QObject
 {
     Q_OBJECT
 public:
-    PluginConnector(QObject* parent = nullptr) : QObject(parent) { }
+    PluginConnector(QObject* parent = nullptr)
+        : QObject(parent)
+    {
+    }
 
     void emitLogSignal(XB::Log const& l) const
     {
@@ -90,7 +93,6 @@ public:
 
     virtual void pluginSlot(QString const& signal, QVariantMap const& data)
     {
-
     }
 
     virtual bool hasRegisteredPluginChoiceSignal(QString const& signal)
@@ -108,49 +110,41 @@ signals:
 
 class PluginInterface
 {
-private:
-    PluginConnector* pluginConnector = nullptr;
-
 public:
     virtual ~PluginInterface()
     {
-        if(this->pluginConnector != nullptr)
+        if (this->pluginConnector != nullptr)
             this->pluginConnector->deleteLater();
     }
 
-    virtual QString name() const = 0;
-    virtual QString id() const = 0;
+    virtual QString       name() const    = 0;
+    virtual QString       id() const      = 0;
     virtual PluginVersion version() const = 0;
-    virtual QString license() const = 0;
-    virtual QIcon icon() const = 0;
-    virtual bool initialize() = 0;
-    virtual bool stop() = 0;
+    virtual QString       license() const = 0;
+    virtual QString       icon() const    = 0;
+    virtual bool          initialize()    = 0;
+    virtual bool          stop()          = 0;
 
-    virtual QWidget* createWidget() = 0;
-    virtual QWidget* createSettingsWidget() = 0;
-    virtual QWidget* createAboutWidget() = 0;
-    virtual bool loadSettings() = 0;
+    virtual bool loadSettings()       = 0;
     virtual bool saveSettings() const = 0;
 
     PluginInfo info() const
     {
-        return { this->version(), this->id() };
+        return {this->version(), this->id()};
     }
 
-    PluginConnector* getPluginConnector()
+    virtual PluginConnector* getPluginConnector()
     {
-        if(this->pluginConnector == nullptr)
+        if (this->pluginConnector == nullptr)
             this->pluginConnector = new PluginConnector;
         return this->pluginConnector;
     }
 
-    void setPluginConnector(PluginConnector* pluginConnector)
-    {
-        this->pluginConnector = pluginConnector;
-    }
+protected:
+    PluginConnector* pluginConnector = nullptr;
 };
 
-}
+} // namespace KU::PLUGIN
 
 #define PLUGININTERFACE_IID "xavi-b.karunit.PluginInterface/1.0"
 Q_DECLARE_INTERFACE(KU::PLUGIN::PluginInterface, PLUGININTERFACE_IID)

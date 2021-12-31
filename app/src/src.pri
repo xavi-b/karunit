@@ -1,13 +1,6 @@
-SUBDIRS += \
-    widgets/
-
-include(widgets/widgets.pri)
-
 SOURCES += \
     $$PWD/main.cpp \
-    $$PWD/mainwindow.cpp \
-    $$PWD/splashscreen.cpp
+    $$PWD/mainwindow.cpp
 
 HEADERS += \
-    $$PWD/mainwindow.h \
-    $$PWD/splashscreen.h
+    $$PWD/mainwindow.h

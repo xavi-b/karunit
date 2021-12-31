@@ -1,7 +1,7 @@
 TEMPLATE        = lib
 CONFIG         += plugin c++17
 DEFINES        += QT_DEPRECATED_WARNINGS
-QT             += widgets
+QT             += quick
 TARGET          = karunit_log_plugin
 DESTDIR         = $$PWD/../../app/plugins
 

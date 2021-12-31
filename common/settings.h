@@ -12,18 +12,15 @@ class Settings : public QSettings
 {
     Q_OBJECT
 private:
-    Settings(QObject *parent = nullptr);
+    Settings(QObject* parent = nullptr);
 
 public:
     static Settings* instance();
 
-    static void setValue(QString const& key, QVariant const& value);
-    static QVariant value(QString const& key, QVariant const& defaultValue);
-
-    static void setValue(QString const& pluginId, QString const& key, QVariant const& value);
-    static QVariant value(QString const& pluginId, QString const& key, QVariant const& defaultValue);
+    Q_INVOKABLE void     save(QString const& key, QVariant const& value);
+    Q_INVOKABLE QVariant get(QString const& key, QVariant const& defaultValue);
 };
 
-}
+} // namespace KU
 
 #endif // SETTINGS_H

@@ -1,4 +1,4 @@
-QT          += core gui widgets
+QT          += core gui quick
 CONFIG      += c++17
 DEFINES     += QT_DEPRECATED_WARNINGS
 TARGET       = karunit

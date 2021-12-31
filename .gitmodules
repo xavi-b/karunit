@@ -1,14 +1,10 @@
 [submodule "third-party/xblog"]
 	path = third-party/xblog
 	url = git@github.com:xavi-b/xblog.git
-    branch = master
-    ignore = all
-
-[submodule "third-party/SlidingPanel"]
-	path = third-party/SlidingPanel
-	url = git@github.com:xavi-b/SlidingPanel.git
-    branch = master
-    ignore = all
+	branch = master
+	ignore = all
 [submodule "third-party/QtFreeVirtualKeyboard"]
 	path = third-party/QtFreeVirtualKeyboard
 	url = git@github.com:xavi-b/QtFreeVirtualKeyboard.git
+	branch = master
+	ignore = all

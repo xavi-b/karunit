@@ -1,7 +1,6 @@
 TEMPLATE        = lib
 CONFIG         += plugin c++17
 DEFINES        += QT_DEPRECATED_WARNINGS
-QT             += widgets
 TARGET          = karunit_plugininterface
 DESTDIR         = $$PWD
 
