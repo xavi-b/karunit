@@ -13,6 +13,19 @@ ApplicationWindow {
     visible: true
     title: qsTr("Karunit")
 
+    Connections {
+        target: KUInstance
+        function onPrompt(plugins, signalName, signalData) {
+            var popupComponent = Qt.createComponent("ChoicePopup.qml")
+            var popup = popupComponent.createObject(window, {
+                                                        "plugins": plugins,
+                                                        "signalName": signalName,
+                                                        "signalData": signalData
+                                                    })
+            popup.open()
+        }
+    }
+
     InputPanel {
         id: inputPanel
 

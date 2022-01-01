@@ -11,6 +11,8 @@
 namespace KU::UI
 {
 
+typedef QMap<QString, KU::PLUGIN::PluginInterface*> PluginsMap;
+
 class Instance : public QObject
 {
     Q_OBJECT
@@ -26,10 +28,11 @@ public:
     Q_INVOKABLE QString pluginName(QString const& id) const;
     Q_INVOKABLE QString pluginIcon(QString const& id) const;
 
-    void showPrompt(QSet<KU::PLUGIN::PluginInterface*> plugins, QString const& signal, QVariantMap const& data);
-    void hidePrompt();
+    void             showPrompt(PluginsMap plugins, QString const& signal, QVariantMap const& data);
+    Q_INVOKABLE void selectPromptedPlugin(QString const& pluginId, QString const& signalName, QVariantMap const& signalData);
 
 signals:
+    void prompt(QStringList plugins, QString const& signal, QVariantMap const& data);
     void widgetPluginsChanged();
     void settingsPluginsChanged();
     void aboutPluginsChanged();
@@ -38,10 +41,10 @@ protected:
     QWidget* buildTabWidget();
 
 private:
-    QMap<QString, KU::PLUGIN::PluginInterface*> initializedPlugins;
-    QStringList                                 widgetPlugins;
-    QStringList                                 settingsPlugins;
-    QStringList                                 aboutPlugins;
+    PluginsMap  initializedPlugins;
+    QStringList widgetPlugins;
+    QStringList settingsPlugins;
+    QStringList aboutPlugins;
 
     void loadPlugins();
     void connectPlugin(KU::PLUGIN::PluginInterface* plugin);

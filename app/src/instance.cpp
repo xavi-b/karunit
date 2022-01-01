@@ -111,24 +111,28 @@ void Instance::connectPlugin(PLUGIN::PluginInterface* plugin)
             [=](QString const& signal, QVariantMap const& data) {
                 XB::Logger::log(XB::LogLevel::DEBUG, plugin->name() + " emitPluginChoiceSignal " + signal);
 
-                QSet<KU::PLUGIN::PluginInterface*> signalRegisteredPlugins;
+                PluginsMap signalRegisteredPlugins;
 
                 for (auto& p : this->initializedPlugins)
                     if (p != plugin && p->getPluginConnector()->hasRegisteredPluginChoiceSignal(signal))
-                        signalRegisteredPlugins.insert(p);
+                        signalRegisteredPlugins[p->id()] = p;
 
                 if (signalRegisteredPlugins.size() > 0)
                 {
-                    if (signalRegisteredPlugins.size() == 1)
-                    {
-                        XB::Logger::log(XB::LogLevel::DEBUG,
-                                        (*signalRegisteredPlugins.begin())->name() + " pluginSlot" + signal);
-                        (*signalRegisteredPlugins.begin())->getPluginConnector()->pluginSlot(signal, data);
-                    }
-                    else
+                    //                    if (signalRegisteredPlugins.size() == 1)
+                    //                    {
+                    //                        XB::Logger::log(XB::LogLevel::DEBUG,
+                    //                                        (*signalRegisteredPlugins.begin())->name() + " pluginSlot" + signal);
+                    //                        (*signalRegisteredPlugins.begin())->getPluginConnector()->pluginSlot(signal, data);
+                    //                    }
+                    //                    else
                     {
                         this->showPrompt(signalRegisteredPlugins, signal, data);
                     }
+                }
+                else
+                {
+                    XB::Logger::log(XB::LogLevel::DEBUG, "No registered plugin for " + signal);
                 }
             });
 }
@@ -179,23 +183,19 @@ QString Instance::pluginIcon(const QString& id) const
     return "UNKNOWN";
 }
 
-void Instance::showPrompt(QSet<PLUGIN::PluginInterface*> plugins, QString const& signal, QVariantMap const& data)
+void Instance::showPrompt(PluginsMap plugins, QString const& signal, QVariantMap const& data)
 {
-    // TODO
-    //    disconnect(this->prompt, &WIDGETS::Prompt::choiceMade, this, nullptr);
-    //    connect(this->prompt, &WIDGETS::Prompt::choiceMade,
-    //            this, [=](KU::PLUGIN::PluginInterface* plugin)
-    //    {
-    //        XB::Logger::log(XB::LogLevel::DEBUG, plugin->name() + " pluginSlot" + signal);
-    //        plugin->getPluginConnector()->pluginSlot(signal, data);
-    //    });
-
-    //    this->prompt->setChoices(plugins);
-    //    this->prompt->slideDown(this->width()*3/4);
+    emit prompt(plugins.keys(), signal, data);
 }
 
-void Instance::hidePrompt()
+void Instance::selectPromptedPlugin(QString const& pluginId, QString const& signalName, QVariantMap const& signalData)
 {
+    if (this->initializedPlugins.contains(pluginId))
+    {
+        auto plugin = this->initializedPlugins[pluginId];
+        XB::Logger::log(XB::LogLevel::DEBUG, plugin->name() + " pluginSlot" + signalName);
+        plugin->getPluginConnector()->pluginSlot(signalName, signalData);
+    }
 }
 
 } // namespace KU::UI
