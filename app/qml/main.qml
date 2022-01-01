@@ -2,6 +2,7 @@ import QtQuick 2.15
 import QtQuick.Window 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
+import QtQuick.FreeVirtualKeyboard 1.0
 
 import Karunit 1.0
 
@@ -11,6 +12,39 @@ ApplicationWindow {
     height: 480
     visible: true
     title: qsTr("Karunit")
+
+    InputPanel {
+        id: inputPanel
+
+        z: 99
+        y: window.height
+
+        anchors.left: parent.left
+        anchors.right: parent.right
+
+        btnTextFontFamily: "monospace"
+
+        states: State {
+            name: "visible"
+            when: Qt.inputMethod.visible
+            PropertyChanges {
+                target: inputPanel
+                y: window.height - inputPanel.height
+            }
+        }
+        transitions: Transition {
+            from: ""
+            to: "visible"
+            reversible: true
+            ParallelAnimation {
+                NumberAnimation {
+                    properties: "y"
+                    duration: 150
+                    easing.type: Easing.InOutQuad
+                }
+            }
+        }
+    }
 
     ToolBar {
         id: header
