@@ -1,11 +1,11 @@
-#include "mainwindow.h"
+#include "instance.h"
 #include <QDirIterator>
 #include <QIcon>
 
 namespace KU::UI
 {
 
-void MainWindow::loadPlugins()
+void Instance::loadPlugins()
 {
     QVector<KU::PLUGIN::PluginInterface*> loadedPluginsInterfaces;
     QVector<KU::PLUGIN::PluginInfo>       loadedPluginsInfos;
@@ -80,7 +80,7 @@ void MainWindow::loadPlugins()
     //        XB::Logger::log(XB::LogLevel::DEBUG, it.next());
 }
 
-void MainWindow::connectPlugin(PLUGIN::PluginInterface* plugin)
+void Instance::connectPlugin(PLUGIN::PluginInterface* plugin)
 {
     connect(plugin->getPluginConnector(), &KU::PLUGIN::PluginConnector::log, this, [=](XB::Log const& log) {
         XB::Logger::log(log.level, "[PLUGIN " + plugin->name() + "] " + log.text);
@@ -133,7 +133,7 @@ void MainWindow::connectPlugin(PLUGIN::PluginInterface* plugin)
             });
 }
 
-void MainWindow::unloadPlugins()
+void Instance::unloadPlugins()
 {
     for (auto& p : this->initializedPlugins)
     {
@@ -142,7 +142,7 @@ void MainWindow::unloadPlugins()
     }
 }
 
-MainWindow::MainWindow(QObject* parent)
+Instance::Instance(QObject* parent)
     : QObject(parent)
 {
     connect(XB::Logger::instance(), &XB::Logger::logWritten, this, [=](XB::Log const& log) {
@@ -158,12 +158,12 @@ MainWindow::MainWindow(QObject* parent)
     this->loadPlugins();
 }
 
-MainWindow::~MainWindow()
+Instance::~Instance()
 {
     this->unloadPlugins();
 }
 
-QString MainWindow::pluginName(const QString& id) const
+QString Instance::pluginName(const QString& id) const
 {
     if (this->initializedPlugins.contains(id))
         return this->initializedPlugins[id]->name();
@@ -171,7 +171,7 @@ QString MainWindow::pluginName(const QString& id) const
     return "UNKNOWN";
 }
 
-QString MainWindow::pluginIcon(const QString& id) const
+QString Instance::pluginIcon(const QString& id) const
 {
     if (this->initializedPlugins.contains(id))
         return this->initializedPlugins[id]->icon();
@@ -179,7 +179,7 @@ QString MainWindow::pluginIcon(const QString& id) const
     return "UNKNOWN";
 }
 
-void MainWindow::showPrompt(QSet<PLUGIN::PluginInterface*> plugins, QString const& signal, QVariantMap const& data)
+void Instance::showPrompt(QSet<PLUGIN::PluginInterface*> plugins, QString const& signal, QVariantMap const& data)
 {
     // TODO
     //    disconnect(this->prompt, &WIDGETS::Prompt::choiceMade, this, nullptr);
@@ -194,7 +194,7 @@ void MainWindow::showPrompt(QSet<PLUGIN::PluginInterface*> plugins, QString cons
     //    this->prompt->slideDown(this->width()*3/4);
 }
 
-void MainWindow::hidePrompt()
+void Instance::hidePrompt()
 {
 }
 

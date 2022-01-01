@@ -1,6 +1,6 @@
 SOURCES += \
-    $$PWD/main.cpp \
-    $$PWD/mainwindow.cpp
+    $$PWD/instance.cpp \
+    $$PWD/main.cpp
 
 HEADERS += \
-    $$PWD/mainwindow.h
+    $$PWD/instance.h

@@ -1,5 +1,5 @@
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#ifndef INSTANCE_H
+#define INSTANCE_H
 
 #include <QCoreApplication>
 #include <QDir>
@@ -11,7 +11,7 @@
 namespace KU::UI
 {
 
-class MainWindow : public QObject
+class Instance : public QObject
 {
     Q_OBJECT
 
@@ -20,8 +20,8 @@ class MainWindow : public QObject
     Q_PROPERTY(QStringList aboutPlugins MEMBER aboutPlugins NOTIFY aboutPluginsChanged)
 
 public:
-    MainWindow(QObject* parent = nullptr);
-    virtual ~MainWindow();
+    Instance(QObject* parent = nullptr);
+    virtual ~Instance();
 
     Q_INVOKABLE QString pluginName(QString const& id) const;
     Q_INVOKABLE QString pluginIcon(QString const& id) const;
@@ -50,4 +50,4 @@ private:
 
 } // namespace KU::UI
 
-#endif // MAINWINDOW_H
+#endif // INSTANCE_H

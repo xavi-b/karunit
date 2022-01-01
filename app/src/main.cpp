@@ -1,6 +1,6 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
-#include "mainwindow.h"
+#include "instance.h"
 #include "defines.h"
 #include "settings.h"
 
@@ -48,8 +48,8 @@ int main(int argc, char* argv[])
     app.setOrganizationName(ORG_NAME);
     app.setOrganizationDomain(APP_NAME);
 
-    KU::UI::MainWindow w;
-    qmlRegisterSingletonInstance("Karunit", 1, 0, "KUMainWindow", &w);
+    KU::UI::Instance w;
+    qmlRegisterSingletonInstance("Karunit", 1, 0, "KUInstance", &w);
     qmlRegisterSingletonInstance("Karunit", 1, 0, "KUSettings", KU::Settings::instance());
 
     QQmlApplicationEngine engine;

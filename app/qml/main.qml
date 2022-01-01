@@ -90,15 +90,15 @@ ApplicationWindow {
             anchors.fill: parent
 
             spacing: 2
-            model: KUMainWindow.widgetPlugins
+            model: KUInstance.widgetPlugins
             delegate: Button {
                 id: button
-                icon.name: KUMainWindow.pluginIcon(modelData)
-                icon.source: KUMainWindow.pluginIcon(
-                                 modelData) !== "" ? "qrc" + KUMainWindow.pluginIcon(
+                icon.name: KUInstance.pluginIcon(modelData)
+                icon.source: KUInstance.pluginIcon(
+                                 modelData) !== "" ? "qrc" + KUInstance.pluginIcon(
                                                          modelData) : ""
                 icon.color: "transparent"
-                text: KUMainWindow.pluginName(modelData)
+                text: KUInstance.pluginName(modelData)
                 width: parent.width
                 height: 50
                 background: Rectangle {
@@ -153,9 +153,9 @@ ApplicationWindow {
             interactive: false
             clip: true
             Repeater {
-                model: KUMainWindow.widgetPlugins
+                model: KUInstance.widgetPlugins
                 Loader {
-                    property string name: KUMainWindow.pluginName(modelData)
+                    property string name: KUInstance.pluginName(modelData)
                     active: true // TODO add property if can be unloaded
                     source: "qrc:/" + modelData + "/widget.qml"
                     clip: true
