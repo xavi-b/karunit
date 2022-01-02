@@ -14,7 +14,6 @@ Item {
         Repeater {
             model: KUInstance.availableLocales
 
-            // TODO "Icon made by Freepik from www.flaticon.com"
             RoundButton {
                 icon.source: "qrc:/icons/" + modelData + ".png"
                 icon.color: "transparent"

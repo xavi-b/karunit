@@ -2,9 +2,8 @@
 	path = third-party/xblog
 	url = git@github.com:xavi-b/xblog.git
 	branch = master
-	ignore = all
+
 [submodule "third-party/QtFreeVirtualKeyboard"]
 	path = third-party/QtFreeVirtualKeyboard
 	url = git@github.com:xavi-b/QtFreeVirtualKeyboard.git
 	branch = master
-	ignore = all
