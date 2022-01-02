@@ -22,12 +22,11 @@ LIBS += -L$$PWD/../third-party/SlidingPanel/lib -lSlidingPanel
 INCLUDEPATH += $$PWD/../third-party/SlidingPanel/include
 
 SUBDIRS += \
-    src/
+    src/ \
+    res/
 
 include(src/src.pri)
-
-RESOURCES += \
-    app.qrc
+include(res/res.pri)
 
 debug {
 CONFIG += console

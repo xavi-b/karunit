@@ -1,6 +1,7 @@
 #include "instance.h"
 #include <QDirIterator>
 #include <QIcon>
+#include "settings.h"
 
 namespace KU::UI
 {
@@ -119,13 +120,13 @@ void Instance::connectPlugin(PLUGIN::PluginInterface* plugin)
 
                 if (signalRegisteredPlugins.size() > 0)
                 {
-                    //                    if (signalRegisteredPlugins.size() == 1)
-                    //                    {
-                    //                        XB::Logger::log(XB::LogLevel::DEBUG,
-                    //                                        (*signalRegisteredPlugins.begin())->name() + " pluginSlot" + signal);
-                    //                        (*signalRegisteredPlugins.begin())->getPluginConnector()->pluginSlot(signal, data);
-                    //                    }
-                    //                    else
+                    if (signalRegisteredPlugins.size() == 1)
+                    {
+                        XB::Logger::log(XB::LogLevel::DEBUG,
+                                        (*signalRegisteredPlugins.begin())->name() + " pluginSlot" + signal);
+                        (*signalRegisteredPlugins.begin())->getPluginConnector()->pluginSlot(signal, data);
+                    }
+                    else
                     {
                         this->showPrompt(signalRegisteredPlugins, signal, data);
                     }
@@ -149,6 +150,8 @@ void Instance::unloadPlugins()
 Instance::Instance(QObject* parent)
     : QObject(parent)
 {
+    this->switchLocale(KU::Settings::instance()->get("karunit/currentLocale", this->defaultLocale).toString());
+
     connect(XB::Logger::instance(), &XB::Logger::logWritten, this, [=](XB::Log const& log) {
         QVariantMap data;
         data["level"]    = static_cast<int>(log.level);
@@ -196,6 +199,78 @@ void Instance::selectPromptedPlugin(QString const& pluginId, QString const& sign
         XB::Logger::log(XB::LogLevel::DEBUG, plugin->name() + " pluginSlot" + signalName);
         plugin->getPluginConnector()->pluginSlot(signalName, signalData);
     }
+}
+
+QString Instance::translationsDir() const
+{
+    return ":/translations";
+}
+
+bool Instance::switchLocale(QString const& locale)
+{
+    if (this->getAvailableLocales().contains(locale))
+    {
+        qApp->removeTranslator(&this->translator);
+        qApp->removeTranslator(&this->qt_translator);
+
+        QString path;
+        path = this->translationsDir() + "/" + locale + ".qm";
+        if (translator.load(path))
+            qApp->installTranslator(&translator);
+
+        QString shortLocale = locale.split('_').first();
+        path                = ":/qt_translations/qtbase_" + shortLocale + ".qm";
+        if (qt_translator.load(path))
+            qApp->installTranslator(&qt_translator);
+
+        this->setCurrentLocale(locale);
+
+        return true;
+    }
+
+    return false;
+}
+
+QStringList Instance::getAvailableLocales() const
+{
+    QDir        dir(this->translationsDir());
+    QStringList tsFiles = dir.entryList(QStringList("*.qm"), QDir::Filter::Files);
+
+    QStringList locales;
+    locales << this->defaultLocale;
+    for (int i = 0; i < tsFiles.size(); ++i)
+    {
+        QString locale = tsFiles[i];
+        locale.truncate(locale.lastIndexOf('.'));
+        locales << locale;
+    }
+    return locales;
+}
+
+void Instance::setDefaultLocale(const QString& s)
+{
+    this->defaultLocale = s;
+    if (this->currentLocale.isEmpty())
+        this->setCurrentLocale(this->defaultLocale);
+}
+
+QString Instance::getCurrentLocale()
+{
+    if (this->currentLocale.isEmpty())
+        this->setCurrentLocale(this->defaultLocale);
+
+    return this->currentLocale;
+}
+
+void Instance::setCurrentLocale(const QString& s)
+{
+    XB::Logger::log(XB::LogLevel::INFO, "setCurrentLocale: " + s);
+
+    this->currentLocale = s;
+    QLocale::setDefault(this->currentLocale);
+    KU::Settings::instance()->save("karunit/currentLocale", this->currentLocale);
+
+    emit currentLocaleChanged();
 }
 
 } // namespace KU::UI

@@ -11,7 +11,7 @@ ApplicationWindow {
     width: 640
     height: 480
     visible: true
-    title: qsTr("Karunit")
+    title: "Karunit"
 
     Connections {
         target: KUInstance
@@ -132,6 +132,19 @@ ApplicationWindow {
                 z: listView.z + 10
                 width: parent.width
                 spacing: 2
+                Button {
+                    Layout.fillWidth: true
+                    text: qsTr("Languages")
+                    icon.source: "qrc:/icons/" + KUInstance.currentLocale + ".png"
+                    icon.color: "transparent"
+                    onClicked: {
+                        stackView.push("qrc:/qml/Languages.qml")
+                        label.text = Qt.binding(function () {
+                            return text
+                        })
+                        drawer.close()
+                    }
+                }
                 Button {
                     Layout.fillWidth: true
                     text: qsTr("Settings")

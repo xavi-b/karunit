@@ -4,5 +4,8 @@
         <file>qml/Settings.qml</file>
         <file>qml/About.qml</file>
         <file>qml/ChoicePopup.qml</file>
+        <file>qml/Languages.qml</file>
+        <file>icons/en_US.png</file>
+        <file>icons/fr_FR.png</file>
     </qresource>
 </RCC>
