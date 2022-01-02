@@ -4,6 +4,8 @@
 #include <QString>
 #include <QSet>
 #include <QObject>
+#include <QTranslator>
+#include <QCoreApplication>
 #include "log.h"
 
 namespace KU::PLUGIN
@@ -140,7 +142,17 @@ public:
         return this->pluginConnector;
     }
 
+    virtual void switchLocale(QString const& locale)
+    {
+        qApp->removeTranslator(&this->translator);
+
+        QString path = ":/" + id() + "_plugin/translations/" + locale + ".qm";
+        if (translator.load(path))
+            qApp->installTranslator(&translator);
+    }
+
 protected:
+    QTranslator      translator;
     PluginConnector* pluginConnector = nullptr;
 };
 

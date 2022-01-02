@@ -69,16 +69,18 @@ void Instance::loadPlugins()
         auto aboutFile = ":/" + p->id() + "/about.qml";
         if (QFile(aboutFile).exists())
             aboutPlugins.append(p->id());
+
+        p->switchLocale(this->currentLocale);
     }
 
     emit widgetPluginsChanged();
     emit settingsPluginsChanged();
     emit aboutPluginsChanged();
 
-    //    QDirIterator it(":", QDirIterator::Subdirectories);
-    //    XB::Logger::log(XB::LogLevel::DEBUG, "Loaded resources:");
-    //    while (it.hasNext())
-    //        XB::Logger::log(XB::LogLevel::DEBUG, it.next());
+    QDirIterator it(":", QDirIterator::Subdirectories);
+    XB::Logger::log(XB::LogLevel::DEBUG, "Loaded resources:");
+    while (it.hasNext())
+        XB::Logger::log(XB::LogLevel::DEBUG, it.next());
 }
 
 void Instance::connectPlugin(PLUGIN::PluginInterface* plugin)
@@ -222,6 +224,9 @@ bool Instance::switchLocale(QString const& locale)
         path                = ":/qt_translations/qtbase_" + shortLocale + ".qm";
         if (qt_translator.load(path))
             qApp->installTranslator(&qt_translator);
+
+        for (auto& p : this->initializedPlugins)
+            p->switchLocale(locale);
 
         this->setCurrentLocale(locale);
 
