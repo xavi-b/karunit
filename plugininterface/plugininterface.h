@@ -144,11 +144,15 @@ public:
 
     virtual void switchLocale(QString const& locale)
     {
+        this->getPluginConnector()->emitLogSignal("Switching plugin locale " + locale);
+
         qApp->removeTranslator(&this->translator);
 
         QString path = ":/" + id() + "_plugin/translations/" + locale + ".qm";
         if (translator.load(path))
             qApp->installTranslator(&translator);
+        else
+            this->getPluginConnector()->emitLogSignal(XB::Log(XB::WARN, "Failed loading plugin locale " + locale));
     }
 
 protected:
