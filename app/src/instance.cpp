@@ -71,16 +71,16 @@ void Instance::loadPlugins()
             aboutPlugins.append(p->id());
 
         p->switchLocale(this->currentLocale);
+
+        this->availableSlots.append(p->getPluginConnector()->availableSlots());
     }
 
-    emit widgetPluginsChanged();
-    emit settingsPluginsChanged();
-    emit aboutPluginsChanged();
+    emit availablePluginsChanged();
 
-    QDirIterator it(":", QDirIterator::Subdirectories);
-    XB::Logger::log(XB::LogLevel::DEBUG, "Loaded resources:");
-    while (it.hasNext())
-        XB::Logger::log(XB::LogLevel::DEBUG, it.next());
+    //    QDirIterator it(":", QDirIterator::Subdirectories);
+    //    XB::Logger::log(XB::LogLevel::DEBUG, "Loaded resources:");
+    //    while (it.hasNext())
+    //        XB::Logger::log(XB::LogLevel::DEBUG, it.next());
 }
 
 void Instance::connectPlugin(PLUGIN::PluginInterface* plugin)
@@ -276,6 +276,11 @@ void Instance::setCurrentLocale(const QString& s)
     KU::Settings::instance()->save("karunit/currentLocale", this->currentLocale);
 
     emit currentLocaleChanged();
+}
+
+QStringList Instance::getAvailablePlugins() const
+{
+    return this->initializedPlugins.keys();
 }
 
 } // namespace KU::UI

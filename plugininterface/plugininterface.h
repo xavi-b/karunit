@@ -102,6 +102,11 @@ public:
         return false;
     }
 
+    virtual QStringList availableSlots()
+    {
+        return QStringList();
+    }
+
 signals:
     void hasInitialized(bool success);
     void log(XB::Log const& log) const;

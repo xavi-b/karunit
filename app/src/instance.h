@@ -18,9 +18,11 @@ class Instance : public QObject
 {
     Q_OBJECT
 
-    Q_PROPERTY(QStringList widgetPlugins MEMBER widgetPlugins NOTIFY widgetPluginsChanged)
-    Q_PROPERTY(QStringList settingsPlugins MEMBER settingsPlugins NOTIFY settingsPluginsChanged)
-    Q_PROPERTY(QStringList aboutPlugins MEMBER aboutPlugins NOTIFY aboutPluginsChanged)
+    Q_PROPERTY(QStringList widgetPlugins MEMBER widgetPlugins NOTIFY availablePluginsChanged)
+    Q_PROPERTY(QStringList settingsPlugins MEMBER settingsPlugins NOTIFY availablePluginsChanged)
+    Q_PROPERTY(QStringList aboutPlugins MEMBER aboutPlugins NOTIFY availablePluginsChanged)
+    Q_PROPERTY(QStringList availablePlugins READ getAvailablePlugins NOTIFY availablePluginsChanged)
+    Q_PROPERTY(QStringList availableSlots MEMBER availableSlots NOTIFY availablePluginsChanged)
     Q_PROPERTY(QString currentLocale READ getCurrentLocale NOTIFY currentLocaleChanged)
     Q_PROPERTY(QStringList availableLocales READ getAvailableLocales CONSTANT)
 
@@ -40,12 +42,11 @@ public:
     void             setDefaultLocale(QString const& s);
     QString          getCurrentLocale();
     void             setCurrentLocale(const QString& s);
+    QStringList      getAvailablePlugins() const;
 
 signals:
     void prompt(QStringList plugins, QString const& signal, QVariantMap const& data);
-    void widgetPluginsChanged();
-    void settingsPluginsChanged();
-    void aboutPluginsChanged();
+    void availablePluginsChanged();
     void currentLocaleChanged();
 
 private:
@@ -53,6 +54,7 @@ private:
     QStringList widgetPlugins;
     QStringList settingsPlugins;
     QStringList aboutPlugins;
+    QStringList availableSlots;
 
     QTranslator translator;
     QTranslator qt_translator;
