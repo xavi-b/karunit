@@ -138,6 +138,11 @@ void Instance::connectPlugin(PLUGIN::PluginInterface* plugin)
                     XB::Logger::log(XB::LogLevel::DEBUG, "No registered plugin for " + signal);
                 }
             });
+
+    connect(plugin->getPluginConnector(), &KU::PLUGIN::PluginConnector::showPluginSignal, this, [=](QString const& pluginId) {
+        if (this->widgetPlugins.contains(pluginId))
+            emit showPlugin(this->widgetPlugins.indexOf(pluginId));
+    });
 }
 
 void Instance::unloadPlugins()

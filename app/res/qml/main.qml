@@ -24,6 +24,14 @@ ApplicationWindow {
                                                     })
             popup.open()
         }
+
+        function onShowPlugin(index) {
+            listView.currentIndex = index
+            stackView.pop(stackView.initialItem)
+            swipeView.currentIndex = index
+            label.text = swipeView.currentItem.name
+            drawer.close()
+        }
     }
 
     InputPanel {

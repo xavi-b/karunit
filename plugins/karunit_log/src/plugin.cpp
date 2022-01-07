@@ -76,7 +76,7 @@ bool KU_Log_Plugin::loadSettings()
     return true;
 }
 
-bool KU_Log_Plugin::saveSettings() const
+bool KU_Log_Plugin::saveSettings()
 {
     return KU::Settings::instance()->status() == QSettings::NoError;
 }

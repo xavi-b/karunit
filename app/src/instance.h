@@ -48,6 +48,7 @@ signals:
     void prompt(QStringList plugins, QString const& signal, QVariantMap const& data);
     void availablePluginsChanged();
     void currentLocaleChanged();
+    void showPlugin(int index);
 
 private:
     PluginsMap  initializedPlugins;

@@ -93,6 +93,11 @@ public:
         emit pluginChoiceSignal(signal, data);
     }
 
+    void emitShowPluginSignal(QString const& pluginId)
+    {
+        emit showPluginSignal(pluginId);
+    }
+
     virtual void pluginSlot(QString const& signal, QVariantMap const& data)
     {
     }
@@ -113,6 +118,7 @@ signals:
     void pluginSignal(QString const& signal);
     void pluginDataSignal(QString const& signal, QVariantMap const& data);
     void pluginChoiceSignal(QString const& signal, QVariantMap const& data);
+    void showPluginSignal(QString const& pluginId);
 };
 
 class PluginInterface
@@ -132,8 +138,8 @@ public:
     virtual bool          initialize()    = 0;
     virtual bool          stop()          = 0;
 
-    virtual bool loadSettings()       = 0;
-    virtual bool saveSettings() const = 0;
+    virtual bool loadSettings() = 0;
+    virtual bool saveSettings() = 0;
 
     PluginInfo info() const
     {
