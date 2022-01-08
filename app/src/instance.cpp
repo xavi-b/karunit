@@ -191,6 +191,11 @@ Instance::Instance(QObject* parent)
 
 Instance::~Instance()
 {
+}
+
+void Instance::unload()
+{
+    XB::Logger::log(XB::LogLevel::INFO, "UNLOADING");
     this->unloadPlugins();
     if (this->fileLogger)
         this->fileLogger->quit();
