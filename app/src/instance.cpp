@@ -140,6 +140,7 @@ void Instance::connectPlugin(PLUGIN::PluginInterface* plugin)
             });
 
     connect(plugin->getPluginConnector(), &KU::PLUGIN::PluginConnector::showPluginSignal, this, [=](QString const& pluginId) {
+        XB::Logger::log(XB::LogLevel::DEBUG, plugin->name() + " showPluginSignal " + pluginId);
         if (this->widgetPlugins.contains(pluginId))
             emit showPlugin(this->widgetPlugins.indexOf(pluginId));
     });
