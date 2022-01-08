@@ -158,6 +158,22 @@ void Instance::unloadPlugins()
 Instance::Instance(QObject* parent)
     : QObject(parent)
 {
+    QDir logDir(QCoreApplication::applicationDirPath());
+    if (logDir.exists("log") || logDir.mkdir("log"))
+    {
+        XB::Logger::log(XB::LogLevel::INFO, "Log directory: " + logDir.filePath("log"));
+
+        this->fileLogger = new XB::FileLogger(logDir.filePath("log"), this);
+        connect(this->fileLogger, &XB::FileLogger::fileError, this, [=](QFile::FileError error) {
+            XB::Logger::log(XB::LogLevel::ERROR, "FileLogger QFileError: " + QString::number(error));
+        });
+        this->fileLogger->start();
+    }
+    else
+    {
+        XB::Logger::log(XB::LogLevel::ERROR, "Could not create log directory: " + logDir.filePath("log"));
+    }
+
     this->switchLocale(KU::Settings::instance()->get("karunit/currentLocale", this->defaultLocale).toString());
 
     connect(XB::Logger::instance(), &XB::Logger::logWritten, this, [=](XB::Log const& log) {
@@ -176,6 +192,8 @@ Instance::Instance(QObject* parent)
 Instance::~Instance()
 {
     this->unloadPlugins();
+    if (this->fileLogger)
+        this->fileLogger->quit();
 }
 
 QString Instance::pluginName(const QString& id) const

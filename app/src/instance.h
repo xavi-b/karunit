@@ -8,6 +8,7 @@
 #include "logger.h"
 #include "filelogger.h"
 #include "plugininterface.h"
+#include "filelogger.h"
 
 namespace KU::UI
 {
@@ -57,10 +58,11 @@ private:
     QStringList aboutPlugins;
     QStringList availableSlots;
 
-    QTranslator translator;
-    QTranslator qt_translator;
-    QString     defaultLocale = "en_US";
-    QString     currentLocale;
+    QTranslator     translator;
+    QTranslator     qt_translator;
+    QString         defaultLocale = "en_US";
+    QString         currentLocale;
+    XB::FileLogger* fileLogger = nullptr;
 
     void loadPlugins();
     void connectPlugin(KU::PLUGIN::PluginInterface* plugin);
