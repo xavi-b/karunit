@@ -31,6 +31,8 @@ public:
     Instance(QObject* parent = nullptr);
     virtual ~Instance();
 
+    void unload();
+
     Q_INVOKABLE QString pluginName(QString const& id) const;
     Q_INVOKABLE QString pluginIcon(QString const& id) const;
 
