@@ -57,7 +57,7 @@ int main(int argc, char* argv[])
     const QUrl url(QStringLiteral("qrc:/qml/main.qml"));
     engine.load(url);
 
-    QObject::connect(&app, &QCoreApplication::aboutToQuit, &w, &Instance::unload);
+    QObject::connect(&app, &QCoreApplication::aboutToQuit, &w, &KU::UI::Instance::unload);
 
     return app.exec();
 }
