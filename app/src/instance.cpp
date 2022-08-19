@@ -144,6 +144,16 @@ void Instance::connectPlugin(PLUGIN::PluginInterface* plugin)
         if (this->widgetPlugins.contains(pluginId))
             emit showPlugin(this->widgetPlugins.indexOf(pluginId));
     });
+
+    auto currentLocaleChanged = [=]() {
+        QVariantMap data;
+        data["locale"] = getCurrentLocale();
+        plugin->getPluginConnector()->pluginSlot("currentLocaleChanged", data);
+    };
+
+    connect(this, &KU::UI::Instance::currentLocaleChanged, this, currentLocaleChanged);
+
+    currentLocaleChanged();
 }
 
 void Instance::unloadPlugins()
